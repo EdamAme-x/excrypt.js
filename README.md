@@ -1,7 +1,7 @@
 # excrypt.js
 
 Super easy and secure encryption library.  
-It improves on the weakness of conventional XOR ciphers, making them dramatically faster and easier. 
+It improves on the weakness of conventional XOR ciphers, making them dramatically faster and easier.
 
 This is the method I invented. Therefore, I cannot guarantee its safety 100%, but it is theoretically safe.  
 Author: [@EdamAme-x](https://twitter.com/amex2189)
