@@ -4,6 +4,10 @@ Super easy and secure encryption library.
 It improves on the weakness of conventional XOR ciphers, making them dramatically faster and easier.
 
 This is the method I invented. Therefore, I cannot guarantee its safety 100%, but it is theoretically safe.  
+
+This encryption scheme is based on the trust that the sha256 hash will not be deconverted.  
+Therefore, I recommend that passwords be at least a meaningless sequence of 8 digits.  
+
 Author: [@EdamAme-x](https://twitter.com/amex2189)
 
 ## Installation and Usage
