@@ -20,18 +20,41 @@
 export async function encrypt(
   data: string | Uint8Array,
   password: string | Uint8Array,
+  options: {
+    salt: string | Uint8Array;
+    stretching: number;
+  } = {
+    salt: "excryptjs_$$$_$$$",
+    stretching: 2 ** 8,
+  },
 ): Promise<string> {
   const dataBuffer =
     typeof data === "string" ? new TextEncoder().encode(data) : data;
   const hashedDataBuffer = await crypto.subtle.digest("SHA-256", dataBuffer);
-  const passwordBuffer = await crypto.subtle.digest(
-    "SHA-256",
+  const saltBuffer =
+    typeof options.salt === "string"
+      ? new TextEncoder().encode(options.salt)
+      : options.salt;
+  const passwordBuffer =
     typeof password === "string"
       ? new TextEncoder().encode(password)
-      : password,
-  );
+      : password;
 
-  const verifyBuffer = xor(hashedDataBuffer, passwordBuffer);
+  let passwordBufferHashed: ArrayBuffer | null = null;
+
+  for (let i = 0, iterations = options.stretching; i < iterations; i++) {
+    passwordBufferHashed = await crypto.subtle.digest(
+      "SHA-256",
+      new Uint8Array([
+        ...saltBuffer,
+        ...new Uint8Array(
+          passwordBufferHashed ? passwordBufferHashed : passwordBuffer,
+        ),
+      ]),
+    );
+  }
+
+  const verifyBuffer = xor(hashedDataBuffer, passwordBufferHashed!);
 
   return (
     encodeUint8ArrayToBase64(
@@ -60,27 +83,51 @@ export async function encrypt(
 export async function decrypt<B extends boolean = true>(
   encryptedString: string,
   password: string | Uint8Array,
-  // typescript limitation
-  parseString: B = true as any,
+  options: {
+    parseString: B;
+    salt: string | Uint8Array;
+    stretching: number;
+  } = {
+    parseString: true as B,
+    salt: "excryptjs_$$$_$$$",
+    stretching: 2 ** 8,
+  },
 ): Promise<B extends true ? string : Uint8Array> {
   const [dataBuffer, verifyBuffer] = encryptedString
     .split(".")
     .map(decodeUint8ArrayToBase64);
-  const passwordBuffer = await crypto.subtle.digest(
-    "SHA-256",
+  const saltBuffer =
+    typeof options.salt === "string"
+      ? new TextEncoder().encode(options.salt)
+      : options.salt;
+
+  const passwordBuffer =
     typeof password === "string"
       ? new TextEncoder().encode(password)
-      : password,
-  );
+      : password;
 
-  const decryptedHashedDataBuffer = xor(verifyBuffer, passwordBuffer);
+  let passwordBufferHashed: ArrayBuffer | null = null;
+
+  for (let i = 0, iterations = options.stretching; i < iterations; i++) {
+    passwordBufferHashed = await crypto.subtle.digest(
+      "SHA-256",
+      new Uint8Array([
+        ...saltBuffer,
+        ...new Uint8Array(
+          passwordBufferHashed ? passwordBufferHashed : passwordBuffer,
+        ),
+      ]),
+    );
+  }
+
+  const decryptedHashedDataBuffer = xor(verifyBuffer, passwordBufferHashed!);
 
   const decryptedData = xor(dataBuffer, decryptedHashedDataBuffer).slice(
     0,
     dataBuffer.length - decryptedHashedDataBuffer.length,
   );
 
-  if (parseString) {
+  if (options.parseString) {
     // typescript limitation
     return atob(encodeUint8ArrayToBase64(decryptedData)) as any;
   } else {
