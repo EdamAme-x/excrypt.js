@@ -23,3 +23,9 @@ const decrypted = await decrypt(encrypted, password); // Hello, world!
 // tips
 const decrypted = await decrypt(encrypted, password, false); // Uint8Array of "Hello, world!"
 ```
+
+## How to encrypt?
+
+Calculate the SHA-256 hash of the data and the password.  
+The verify is the XOR of the hashed data and the password.  
+The encrypted data is the XOR of the verify and the data.
