@@ -2,11 +2,8 @@
 
 Super easy and secure encryption library.  
 
-This is the method I invented. Therefore, I cannot guarantee its safety 100%, but it is theoretically safe.
+This is the method I invented. Therefore, I cannot guarantee its safety 100%, but it is theoretically safe.  
 If whoever know the hash of the original data, or the original data and verify, whoever can find out passwords that have been converted to hash, so be careful how you use them.  
-
-This encryption scheme is based on the trust that the sha256 hash will not be deconverted.  
-Therefore, I recommend that passwords be at least a meaningless sequence of 6 digits.
 
 Author: [@EdamAme-x](https://twitter.com/amex2189)
 
