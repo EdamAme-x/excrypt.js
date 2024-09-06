@@ -3,7 +3,7 @@
 Super easy and secure encryption library.  
 
 This is the method I invented. Therefore, I cannot guarantee its safety 100%, but it is theoretically safe.  
-If whoever know the hash of the original data, or the original data and verify, whoever can find out passwords that have been converted to hash, so be careful how you use them.  
+If whoever know the hash of the original data or the original data and verify, whoever can find out passwords that have been converted to hash, so be careful how you use them.  
 
 Author: [@EdamAme-x](https://twitter.com/amex2189)
 
