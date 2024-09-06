@@ -6,7 +6,7 @@ It improves on the weakness of conventional XOR ciphers, making them dramaticall
 This is the method I invented. Therefore, I cannot guarantee its safety 100%, but it is theoretically safe.
 
 This encryption scheme is based on the trust that the sha256 hash will not be deconverted.  
-Therefore, I recommend that passwords be at least a meaningless sequence of 8 digits.
+Therefore, I recommend that passwords be at least a meaningless sequence of 6 digits.
 
 Author: [@EdamAme-x](https://twitter.com/amex2189)
 
