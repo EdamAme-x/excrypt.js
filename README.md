@@ -28,4 +28,4 @@ const decrypted = await decrypt(encrypted, password, false); // Uint8Array of "H
 
 Calculate the SHA-256 hash of the data and the password.  
 The verify is the XOR of the hashed data and the password.  
-The encrypted data is the XOR of the verify and the data.
+The encrypted data is the XOR of the hashed data and the data.
